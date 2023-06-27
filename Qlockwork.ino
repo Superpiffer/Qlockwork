@@ -82,7 +82,7 @@ ESP8266HTTPUpdateServer httpUpdater;
 
 // DHT22
 #ifdef SENSOR_DHT22
-DHT dht(PIN_DHT22, DHT22);
+DHT dht(PIN_DHT22, DHT_TYPE);
 #endif
 
 // MCP9808
