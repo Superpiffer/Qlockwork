@@ -10,8 +10,8 @@
 // Software settings
 //*****************************************************************************
 
-#define PRODUCT_NAME "QLOCKWIFIVE"
-#define WEBSITE_TITLE "QLOCKWIFIVE"
+#define PRODUCT_NAME "QLOCKWORK"
+#define WEBSITE_TITLE "QLOCKWORKs page"
 //#define DEDICATION "The only reason for time is so that everything doesn't happen at once.<br>(Albert Einstein)"
 #define WIFI_SETUP_TIMEOUT 30
 #define WIFI_CONNECT_TIMEOUT 15000
@@ -19,7 +19,7 @@
 #define WIFI_AP_PASS "12345678"
 #define OTA_PASS "1234"
 #define NTP_DEFAULT_SERVER "pool.ntp.org"
-#define SHOW_IP
+//#define SHOW_IP
 //#define WIFI_BEEPS
 
 //#define NONE_TECHNICAL_ZERO
@@ -29,16 +29,16 @@
 
 //#define POWERON_SELFTEST
 //#define SHOW_MODE_AMPM
-#define SHOW_MODE_SECONDS
-#define SHOW_MODE_WEEKDAY
+//#define SHOW_MODE_SECONDS
+//#define SHOW_MODE_WEEKDAY
 #define SHOW_MODE_DATE
-//#define SHOW_MODE_MOONPHASE
+#define SHOW_MODE_MOONPHASE
 #define SHOW_MODE_SUNRISE_SUNSET // works only if APIKEY is defined
 //#define SHOW_MODE_TEST
 #define SHOW_MODE_SETTINGS
 
 #define APIKEY
-#define DEFAULT_LOCATION "Bern, CH"
+#define DEFAULT_LOCATION "Monopoli, IT"
 
 //--------------
 #define MOOD_INTERVAL_MIN 300
@@ -51,9 +51,9 @@
 #endif
 
 //#define LANGUAGE_EN
-#define LANGUAGE_DE
+//#define LANGUAGE_DE
 //#define LANGUAGE_FR
-//#define LANGUAGE_IT
+#define LANGUAGE_IT
 //#define LANGUAGE_ES
 //#define LANGUAGE_NL
 
@@ -97,13 +97,13 @@
 // Hardware settings
 //*****************************************************************************
 
-//#define BOARD_DEFAULT
+#define BOARD_DEFAULT
 //#define BOARD_QWF_V1_2
-#define BOARD_QWF_V2_0
+//#define BOARD_QWF_V2_0
 
 #ifdef BOARD_DEFAULT
-#define ESP_LED
-//#define SENSOR_DHT22
+//#define ESP_LED
+#define SENSOR_DHT22
 //#define SENSOR_MCP9808
 //#define RTC_BACKUP
 //#define LDR
@@ -133,10 +133,11 @@
 // used for flash memory databus
 
 //#define LED_LAYOUT_HORIZONTAL_1
-#define LED_LAYOUT_VERTICAL_1
+//#define LED_LAYOUT_VERTICAL_1
 //#define LED_LAYOUT_VERTICAL_2
 //#define LED_LAYOUT_VERTICAL_3
 //#define LED_LAYOUT_VERTICAL_4
+#define LED_LAYOUT_HORIZONTAL_11x11
 
 #define NEOPIXEL_RGB
 //#define NEOPIXEL_RGBW
@@ -227,7 +228,7 @@
 #define SERIAL_SPEED 115200
 
 #define NUMPIXELS_X 11
-#define NUMPIXELS_Y 10
+#define NUMPIXELS_Y 11
 #define NUMPIXELS_CORNERS 4
 
 #define PIXEL_NO_CORNER_1 NUMPIXELS_X*NUMPIXELS_Y
@@ -241,6 +242,7 @@
 #define TEST_BRIGHTNESS 80
 
 #ifdef SENSOR_DHT22
+#define DHT_TYPE DHT11
 #define DHT_TEMPERATURE_OFFSET 0.5
 #define DHT_HUMIDITY_OFFSET -2.0
 #endif
@@ -310,7 +312,7 @@
 //*****************************************************************************
 
 //#define DEBUG
-//#define DEBUG_WEB
+#define DEBUG_WEB
 //#define DEBUG_IR
 //#define DEBUG_MATRIX
 //#define DEBUG_FPS
