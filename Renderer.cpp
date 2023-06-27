@@ -1287,7 +1287,7 @@ void Renderer::setHours(uint8_t hours, boolean glatt, uint8_t language, uint16_t
       break;
     case 1:
     case 13:
-      IT_H_LUNA;
+      IT_H_UNA;
       break;
     case 2:
     case 14:
@@ -1477,7 +1477,7 @@ void Renderer::clearEntryWords(uint8_t language, uint16_t matrix[])
     break;
   case FRONTCOVER_IT:
     IT_SONOLE_R; // remove SONO LE
-    IT_E_R; // remove E (L'UNA)
+    IT_EL_R; // remove E (L'UNA)
     break;
   case FRONTCOVER_NL:
     NL_HETIS_R; // remove HET IS
@@ -1570,7 +1570,7 @@ void Renderer::IT_hours(uint8_t hours, uint16_t matrix[])
   if ((hours != 1) && (hours != 13))
     IT_SONOLE;
   else
-    IT_E;
+    IT_EL;
 }
 
 // Write minutes to screenbuffer.
