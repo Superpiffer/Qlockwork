@@ -232,13 +232,13 @@ Words.h
 #define IT_SONOLE_R   matrix[0] &= ~IT_SONOLE_BM
 #define IT_LE       matrix[0] |= 0b0000011000000000
 #define IT_ORE        matrix[0] |= 0b0000000011100000
-#define IT_E_BM       0b1000000000000000
-#define IT_E        matrix[1] |= IT_E_BM
-#define IT_E_R      matrix[1] &= ~IT_E_BM
+#define IT_EL_BM       0b1010000000000000
+#define IT_EL        matrix[1] |= IT_EL_BM
+#define IT_EL_R      matrix[1] &= ~IT_EL_BM
 #define IT_AM       matrix[0] |= 0b1000000000000000
 #define IT_PM       matrix[0] |= 0b0100000000000000
 
-#define IT_H_LUNA     matrix[1] |= 0b0011110000000000
+#define IT_H_UNA     matrix[1] |= 0b0001110000000000
 #define IT_H_DUE      matrix[1] |= 0b0000000111000000
 #define IT_H_TRE      matrix[2] |= 0b1110000000000000
 #define IT_H_OTTO     matrix[2] |= 0b0001111000000000
@@ -255,10 +255,11 @@ Words.h
 #define IT_E2       matrix[7] |= 0b1000000000000000
 #define IT_UN       matrix[7] |= 0b0011000000000000
 #define IT_QUARTO     matrix[7] |= 0b0000011111100000
-#define IT_VENTI      matrix[8] |= 0b1111100000000000
-#define IT_CINQUE     matrix[8] |= 0b0000011111100000
-#define IT_DIECI      matrix[9] |= 0b1111100000000000
-#define IT_MEZZA      matrix[9] |= 0b0000001111100000
+#define IT_TRENTA			matrix[8] |= 0b1111110000000000
+#define IT_DIECI			matrix[9] |= 0b1111100000000000
+#define IT_MEZZA			matrix[9] |= 0b0000001111100000
+#define IT_VENTI			matrix[10] |= 0b1111100000000000
+#define IT_CINQUE			matrix[10] |= 0b0000011111100000
 
 // NL
 
