@@ -257,7 +257,7 @@ void setup()
 
     // And the monkey flips the switch. (Akiva Goldsman)
     Serial.println();
-    Serial.println("*** QLOCKWIFIVE ***");
+    Serial.println("*** QLOCKWORK ***");
     Serial.println("Firmware: " + String(FIRMWARE_VERSION));
   memset(HostName, 0, sizeof(HostName));
   sprintf(HostName, "%s-%06X", PRODUCT_NAME, ESP.getChipId());
@@ -394,7 +394,7 @@ void setup()
         });
 #endif
         ArduinoOTA.setPassword(OTA_PASS);
-        ArduinoOTA.begin();
+        ArduinoOTA.begin(false);  // Disable mDNS
 
 #ifdef RTC_BACKUP
     RTC.begin();
@@ -1125,8 +1125,8 @@ void loop()
             renderer.setCorners(minute(), matrix);
             for (uint8_t i = 0; i <= 6; i++)
             {
-                matrix[1 + i] |= numbersBig[second() / 10][i] << 11;
-                matrix[1 + i] |= numbersBig[second() % 10][i] << 5;
+                matrix[2 + i] |= numbersBig[second() / 10][i] << 11;
+                matrix[2 + i] |= numbersBig[second() % 10][i] << 5;
             }
             break;
 #endif
@@ -1140,11 +1140,8 @@ void loop()
             if (day() < 10)
                 renderer.setSmallText(("0" + String(day())), TEXT_POS_TOP, matrix);
             else
-                renderer.setSmallText(String(day()), TEXT_POS_TOP, matrix);
-            if (month() < 10)
-                renderer.setSmallText(("0" + String(month())), TEXT_POS_BOTTOM, matrix);
-            else
-                renderer.setSmallText(String(month()), TEXT_POS_BOTTOM, matrix);
+                renderer.setSmallText(String(day()), TEXT_POS_TOP, matrix);      
+            renderer.setSmallText(String(sMonths[month()][0]) + String(sMonths[month()][1]) + String(sMonths[month()][2]), TEXT_POS_BOTTOM, matrix);
             break;
 #endif
 #if defined(SHOW_MODE_SUNRISE_SUNSET) && defined(APIKEY)
@@ -1161,46 +1158,49 @@ void loop()
             {
                 settings.mySettings.color = YELLOW;
                 // Sunrise screen
-                matrix[0] = 0b0000000000000000;
-                matrix[1] = 0b0000000000000000;
-                matrix[2] = 0b0000000000000000;
-                matrix[3] = 0b0000000000000000;
-                matrix[4] = 0b0000000000000000;
-                matrix[5] = 0b0000111000000000;
-                matrix[6] = 0b0011111110000000;
-                matrix[7] = 0b0111111111000000;
-                matrix[8] = 0b0111111111000000;
-                matrix[9] = 0b1111111111100000;
+                matrix[0]  = 0b0000000000000000;
+                matrix[1]  = 0b0000000000000000;
+                matrix[2]  = 0b0000000000000000;
+                matrix[3]  = 0b0000000000000000;
+                matrix[4]  = 0b0000000000000000;
+                matrix[5]  = 0b0000111000000000;
+                matrix[6]  = 0b0011111110000000;
+                matrix[7]  = 0b0111111111000000;
+                matrix[8]  = 0b0111111111000000;
+                matrix[9]  = 0b1111111111100000;
+                matrix[10] = 0b1111111111100000;
             }
             // else if (millis() < sunrise_millis + SUNSET_SUNRISE_SPEED * 0.5 * 0.666)
             else if (millis() < sunrise_millis + 2000)
             {
                 // Sunrise screen
-                matrix[0] = 0b0000000000000000;
-                matrix[1] = 0b0000000000000000;
-                matrix[2] = 0b0000111000000000;
-                matrix[3] = 0b0011111110000000;
-                matrix[4] = 0b0111111111000000;
-                matrix[5] = 0b0111111111000000;
-                matrix[6] = 0b1111111111100000;
-                matrix[7] = 0b1111111111100000;
-                matrix[8] = 0b0111111111000000;
-                matrix[9] = 0b0111111111000000;
+                matrix[0]  = 0b0000000000000000;
+                matrix[1]  = 0b0000000000000000;
+                matrix[2]  = 0b0000111000000000;
+                matrix[3]  = 0b0011111110000000;
+                matrix[4]  = 0b0111111111000000;
+                matrix[5]  = 0b0111111111000000;
+                matrix[6]  = 0b1111111111100000;
+                matrix[7]  = 0b1111111111100000;
+                matrix[8]  = 0b1111111111100000;
+                matrix[9]  = 0b0111111111000000;
+                matrix[10] = 0b0111111111000000;
             }
             // else if (millis() < sunrise_millis + SUNSET_SUNRISE_SPEED * 0.5)
             else if (millis() < sunrise_millis + 3000)
             {
                 // Sunrise screen
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011111110000000;
-                matrix[2] = 0b0111111111000000;
-                matrix[3] = 0b0111111111000000;
-                matrix[4] = 0b1111111111100000;
-                matrix[5] = 0b1111111111100000;
-                matrix[6] = 0b0111111111000000;
-                matrix[7] = 0b0111111111000000;
-                matrix[8] = 0b0011111110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011111110000000;
+                matrix[2]  = 0b0111111111000000;
+                matrix[3]  = 0b0111111111000000;
+                matrix[4]  = 0b1111111111100000;
+                matrix[5]  = 0b1111111111100000;
+                matrix[6]  = 0b1111111111100000;
+                matrix[7]  = 0b0111111111000000;
+                matrix[8]  = 0b0111111111000000;
+                matrix[9]  = 0b0011111110000000;
+                matrix[10] = 0b0000111000000000;
             }
             //else if (millis() < sunrise_millis + SUNSET_SUNRISE_SPEED * 1.5)
             else if (millis() < sunrise_millis + 4500 + settings.mySettings.timeout * 1000)
@@ -1231,46 +1231,49 @@ void loop()
             {
                 settings.mySettings.color = ORANGE;
                 // Sunset screen
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011111110000000;
-                matrix[2] = 0b0111111111000000;
-                matrix[3] = 0b0111111111000000;
-                matrix[4] = 0b1111111111100000;
-                matrix[5] = 0b1111111111100000;
-                matrix[6] = 0b0111111111000000;
-                matrix[7] = 0b0111111111000000;
-                matrix[8] = 0b0011111110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011111110000000;
+                matrix[2]  = 0b0111111111000000;
+                matrix[3]  = 0b0111111111000000;
+                matrix[4]  = 0b1111111111100000;
+                matrix[5]  = 0b1111111111100000;
+                matrix[6]  = 0b1111111111100000;
+                matrix[7]  = 0b0111111111000000;
+                matrix[8]  = 0b0111111111000000;
+                matrix[9]  = 0b0011111110000000;
+                matrix[10] = 0b0000111000000000;
             }
             // else if (millis() < sunset_millis + SUNSET_SUNRISE_SPEED * 0.5 * 0.666)
             else if (millis() < sunset_millis + 2000)
             {
                 // Sunset screen
-                matrix[0] = 0b0000000000000000;
-                matrix[1] = 0b0000000000000000;
-                matrix[2] = 0b0000111000000000;
-                matrix[3] = 0b0011111110000000;
-                matrix[4] = 0b0111111111000000;
-                matrix[5] = 0b0111111111000000;
-                matrix[6] = 0b1111111111100000;
-                matrix[7] = 0b1111111111100000;
-                matrix[8] = 0b0111111111000000;
-                matrix[9] = 0b0111111111000000;
+                matrix[0]  = 0b0000000000000000;
+                matrix[1]  = 0b0000000000000000;
+                matrix[2]  = 0b0000111000000000;
+                matrix[3]  = 0b0011111110000000;
+                matrix[4]  = 0b0111111111000000;
+                matrix[5]  = 0b0111111111000000;
+                matrix[6]  = 0b1111111111100000;
+                matrix[7]  = 0b1111111111100000;
+                matrix[8]  = 0b1111111111100000;
+                matrix[9]  = 0b0111111111000000;
+                matrix[10] = 0b0111111111000000;
             }
             // else if (millis() < sunset_millis + SUNSET_SUNRISE_SPEED * 0.5)
             else if (millis() < sunset_millis + 3000)
             {
                 // Sunset screen
-                matrix[0] = 0b0000000000000000;
-                matrix[1] = 0b0000000000000000;
-                matrix[2] = 0b0000000000000000;
-                matrix[3] = 0b0000000000000000;
-                matrix[4] = 0b0000000000000000;
-                matrix[5] = 0b0000111000000000;
-                matrix[6] = 0b0011111110000000;
-                matrix[7] = 0b0111111111000000;
-                matrix[8] = 0b0111111111000000;
-                matrix[9] = 0b1111111111100000;
+                matrix[0]  = 0b0000000000000000;
+                matrix[1]  = 0b0000000000000000;
+                matrix[2]  = 0b0000000000000000;
+                matrix[3]  = 0b0000000000000000;
+                matrix[4]  = 0b0000000000000000;
+                matrix[5]  = 0b0000111000000000;
+                matrix[6]  = 0b0011111110000000;
+                matrix[7]  = 0b0111111111000000;
+                matrix[8]  = 0b0111111111000000;
+                matrix[9]  = 0b1111111111100000;
+                matrix[10] = 0b1111111111100000;
             }
             // else if (millis() < sunset_millis + SUNSET_SUNRISE_SPEED * 1.5)
             else if (millis() < sunset_millis + 4500 + settings.mySettings.timeout * 1000)
@@ -1292,100 +1295,108 @@ void loop()
             switch (moonphase)
             {
             case 0:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011000110000000;
-                matrix[2] = 0b0100000001000000;
-                matrix[3] = 0b0100000001000000;
-                matrix[4] = 0b1000000000100000;
-                matrix[5] = 0b1000000000100000;
-                matrix[6] = 0b0100000001000000;
-                matrix[7] = 0b0100000001000000;
-                matrix[8] = 0b0011000110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011000110000000;
+                matrix[2]  = 0b0100000001000000;
+                matrix[3]  = 0b0100000001000000;
+                matrix[4]  = 0b1000000000100000;
+                matrix[5]  = 0b1000000000100000;
+                matrix[6]  = 0b1000000000100000;
+                matrix[7]  = 0b0100000001000000;
+                matrix[8]  = 0b0100000001000000;
+                matrix[9]  = 0b0011000110000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             case 1:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0000001110000000;
-                matrix[2] = 0b0000000111000000;
-                matrix[3] = 0b0000000111000000;
-                matrix[4] = 0b0000000111100000;
-                matrix[5] = 0b0000000111100000;
-                matrix[6] = 0b0000000111000000;
-                matrix[7] = 0b0000000111000000;
-                matrix[8] = 0b0000001110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0000001110000000;
+                matrix[2]  = 0b0000000111000000;
+                matrix[3]  = 0b0000000111000000;
+                matrix[4]  = 0b0000000111100000;
+                matrix[5]  = 0b0000000111100000;
+                matrix[6]  = 0b0000000111100000;
+                matrix[7]  = 0b0000000111000000;
+                matrix[8]  = 0b0000000111000000;
+                matrix[9]  = 0b0000001110000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             case 2:
-                matrix[0] = 0b0000011000000000;
-                matrix[1] = 0b0000011110000000;
-                matrix[2] = 0b0000011111000000;
-                matrix[3] = 0b0000011111000000;
-                matrix[4] = 0b0000011111100000;
-                matrix[5] = 0b0000011111100000;
-                matrix[6] = 0b0000011111000000;
-                matrix[7] = 0b0000011111000000;
-                matrix[8] = 0b0000011110000000;
-                matrix[9] = 0b0000011000000000;
+                matrix[0]  = 0b0000011000000000;
+                matrix[1]  = 0b0000011110000000;
+                matrix[2]  = 0b0000011111000000;
+                matrix[3]  = 0b0000011111000000;
+                matrix[4]  = 0b0000011111100000;
+                matrix[5]  = 0b0000011111100000;
+                matrix[6]  = 0b0000011111100000;
+                matrix[7]  = 0b0000011111000000;
+                matrix[8]  = 0b0000011111000000;
+                matrix[9]  = 0b0000011110000000;
+                matrix[10] = 0b0000011000000000;
                 break;
             case 3:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0001111110000000;
-                matrix[2] = 0b0001111111000000;
-                matrix[3] = 0b0001111111000000;
-                matrix[4] = 0b0001111111100000;
-                matrix[5] = 0b0001111111100000;
-                matrix[6] = 0b0001111111000000;
-                matrix[7] = 0b0001111111000000;
-                matrix[8] = 0b0001111110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0001111110000000;
+                matrix[2]  = 0b0001111111000000;
+                matrix[3]  = 0b0001111111000000;
+                matrix[4]  = 0b0001111111100000;
+                matrix[5]  = 0b0001111111100000;
+                matrix[6]  = 0b0001111111100000;
+                matrix[7]  = 0b0001111111000000;
+                matrix[8]  = 0b0001111111000000;
+                matrix[9]  = 0b0001111110000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             case 4:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011111110000000;
-                matrix[2] = 0b0111111111000000;
-                matrix[3] = 0b0111111111000000;
-                matrix[4] = 0b1111111111100000;
-                matrix[5] = 0b1111111111100000;
-                matrix[6] = 0b0111111111000000;
-                matrix[7] = 0b0111111111000000;
-                matrix[8] = 0b0011111110000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011111110000000;
+                matrix[2]  = 0b0111111111000000;
+                matrix[3]  = 0b0111111111000000;
+                matrix[4]  = 0b1111111111100000;
+                matrix[5]  = 0b1111111111100000;
+                matrix[6]  = 0b1111111111100000;
+                matrix[7]  = 0b0111111111000000;
+                matrix[8]  = 0b0111111111000000;
+                matrix[9]  = 0b0011111110000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             case 5:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011111100000000;
-                matrix[2] = 0b0111111100000000;
-                matrix[3] = 0b0111111100000000;
-                matrix[4] = 0b1111111100000000;
-                matrix[5] = 0b1111111100000000;
-                matrix[6] = 0b0111111100000000;
-                matrix[7] = 0b0111111100000000;
-                matrix[8] = 0b0011111100000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011111100000000;
+                matrix[2]  = 0b0111111100000000;
+                matrix[3]  = 0b0111111100000000;
+                matrix[4]  = 0b1111111100000000;
+                matrix[5]  = 0b1111111100000000;
+                matrix[6]  = 0b1111111100000000;
+                matrix[7]  = 0b0111111100000000;
+                matrix[8]  = 0b0111111100000000;
+                matrix[9]  = 0b0011111100000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             case 6:
-                matrix[0] = 0b0000110000000000;
-                matrix[1] = 0b0011110000000000;
-                matrix[2] = 0b0111110000000000;
-                matrix[3] = 0b0111110000000000;
-                matrix[4] = 0b1111110000000000;
-                matrix[5] = 0b1111110000000000;
-                matrix[6] = 0b0111110000000000;
-                matrix[7] = 0b0111110000000000;
-                matrix[8] = 0b0011110000000000;
-                matrix[9] = 0b0000110000000000;
+                matrix[0]  = 0b0000110000000000;
+                matrix[1]  = 0b0011110000000000;
+                matrix[2]  = 0b0111110000000000;
+                matrix[3]  = 0b0111110000000000;
+                matrix[4]  = 0b1111110000000000;
+                matrix[5]  = 0b1111110000000000;
+                matrix[6]  = 0b1111110000000000;
+                matrix[7]  = 0b0111110000000000;
+                matrix[8]  = 0b0111110000000000;
+                matrix[9]  = 0b0011110000000000;
+                matrix[10] = 0b0000110000000000;
                 break;
             case 7:
-                matrix[0] = 0b0000111000000000;
-                matrix[1] = 0b0011100000000000;
-                matrix[2] = 0b0111000000000000;
-                matrix[3] = 0b0111000000000000;
-                matrix[4] = 0b1111000000000000;
-                matrix[5] = 0b1111000000000000;
-                matrix[6] = 0b0111000000000000;
-                matrix[7] = 0b0111000000000000;
-                matrix[8] = 0b0011100000000000;
-                matrix[9] = 0b0000111000000000;
+                matrix[0]  = 0b0000111000000000;
+                matrix[1]  = 0b0011100000000000;
+                matrix[2]  = 0b0111000000000000;
+                matrix[3]  = 0b0111000000000000;
+                matrix[4]  = 0b1111000000000000;
+                matrix[5]  = 0b1111000000000000;
+                matrix[6]  = 0b1111000000000000;
+                matrix[7]  = 0b0111000000000000;
+                matrix[8]  = 0b0111000000000000;
+                matrix[9]  = 0b0011100000000000;
+                matrix[10] = 0b0000111000000000;
                 break;
             }
             break;
@@ -1397,24 +1408,27 @@ void loop()
 #endif
             if (roomTemperature == 0)
             {
-                matrix[0] = 0b0000000001000000;
-                matrix[1] = 0b0000000010100000;
-                matrix[2] = 0b0000000010100000;
-                matrix[3] = 0b0000000011100000;
+                matrix[0] = 0b0000000010000000;
+                matrix[1] = 0b0000000101000000;
+                matrix[2] = 0b0000001000100000;
+                matrix[3] = 0b0000001000100000;
+                matrix[4] = 0b0000001111100000;
             }
             if (roomTemperature > 0)
             {
-                matrix[0] = 0b0000000001000000;
-                matrix[1] = 0b0100000010100000;
-                matrix[2] = 0b1110000010100000;
-                matrix[3] = 0b0100000011100000;
+                matrix[0] = 0b0000000010000000;
+                matrix[1] = 0b0100000101000000;
+                matrix[2] = 0b1110001000100000;
+                matrix[3] = 0b0100001000100000;
+                matrix[4] = 0b0000001111100000;
             }
             if (roomTemperature < 0)
             {
-                matrix[0] = 0b0000000001000000;
-                matrix[1] = 0b0000000010100000;
-                matrix[2] = 0b1110000010100000;
-                matrix[3] = 0b0000000011100000;
+                matrix[0] = 0b0000000010000000;
+                matrix[1] = 0b0000000101000000;
+                matrix[2] = 0b1110001000100000;
+                matrix[3] = 0b0000001000100000;
+                matrix[4] = 0b0000001111100000;
             }
             renderer.setSmallText(String(int(abs(roomTemperature))), TEXT_POS_BOTTOM, matrix);
             break;
@@ -1424,10 +1438,11 @@ void loop()
             Serial.println("Room Humidity: " + String(roomHumidity));
 #endif
             renderer.setSmallText(String(int(roomHumidity + 0.5)), TEXT_POS_TOP, matrix);
-            matrix[6] = 0b0100100001000000;
-            matrix[7] = 0b0001000010100000;
-            matrix[8] = 0b0010000010100000;
-            matrix[9] = 0b0100100011100000;
+            matrix[6]  = 0b0000000010000000;
+            matrix[7]  = 0b0100100101000000;
+            matrix[8]  = 0b0001001000100000;
+            matrix[9]  = 0b0010001000100000;
+            matrix[10] = 0b0100101111100000;
             break;
 #endif
 #endif
@@ -1460,10 +1475,10 @@ void loop()
                 matrix[3] = 0b0010101010100000;
                 matrix[4] = 0b0010111011100000;
             }
-            matrix[6] = 0b0100100000000000;
-            matrix[7] = 0b0001000000000000;
-            matrix[8] = 0b0010000000000000;
-            matrix[9] = 0b0100100000000000;
+            matrix[7]  = 0b0100100000000000;
+            matrix[8]  = 0b0001000000000000;
+            matrix[9]  = 0b0010000000000000;
+            matrix[10] = 0b0100100000000000;
             break;
 #endif
 #ifdef BUZZER
@@ -1474,7 +1489,7 @@ void loop()
 #endif
 #ifdef SHOW_MODE_TEST
         case MODE_TEST:
-            if (testColumn == 10)
+            if (testColumn == NUMPIXELS_X - 1)
                 testColumn = 0;
             matrix[testColumn] = 0b1111111111110000;
             testColumn++;
@@ -2733,7 +2748,7 @@ void handleRoot()
     }
 #endif
     message += F("<span style=\"font-size:12px;\">");
-        message += F("<br><br><a href=\"http://shop.bracci.ch/\">QlockWiFive</a> was <i class=\"fa fa-code\"></i> with <i class=\"fa fa-heart\"></i> by <a href=\"https://github.com/ch570512/Qlockwork/\">ch570512</a> and <a href=\"https://github.com/bracci/Qlockwork/\">bracci</a>");
+        message += F("<br><br>QlockWork was <i class=\"fa fa-code\"></i> with <i class=\"fa fa-heart\"></i> by <a href=\"https://github.com/ch570512/Qlockwork/\">ch570512</a> and <a href=\"https://github.com/bracci/Qlockwork/\">bracci</a>");
         message += F("<br>Firmware: ") + String(FIRMWARE_VERSION);
 #ifdef UPDATE_INFOSERVER
     if (updateInfo > int(FIRMWARE_VERSION))
@@ -3654,7 +3669,7 @@ bool showAnimation(uint8_t brightness)
   {
     for (uint8_t cp = 0; cp <= 3; cp++)
     {
-      ledDriver.setPixelRGB(110 + cp, 0, 0, 0);
+      ledDriver.setPixelRGB(PIXEL_NO_CORNER_1 + cp, 0, 0, 0);
     }
     if ( myanimation.laufmode < 2 ) frame_fak = 1;
   }
@@ -3672,14 +3687,15 @@ bool showAnimation(uint8_t brightness)
     Serial.println("Start Animation: " + String(myanimation.name) + " Loop: " +  String(akt_aniloop) + " Frame: " + String(akt_aniframe) );
 #endif
 
-    for ( uint8_t z = 0; z <= 9; z++)
+    ledDriver.clear();  // Usato per spegnere tutti i led
+    for ( uint8_t z = 0; z < NUMPIXELS_Y - 1; z++)
     {
-      for ( uint8_t x = 0; x <= 10; x++)
+      for ( uint8_t x = 0; x < NUMPIXELS_X; x++)
       {
         red = myanimation.frame[akt_aniframe].color[x][z].red * brightness * 0.0039;
         green = myanimation.frame[akt_aniframe].color[x][z].green * brightness * 0.0039;
         blue = myanimation.frame[akt_aniframe].color[x][z].blue * brightness * 0.0039;
-        ledDriver.setPixelRGB(x, z, red, green, blue);
+        ledDriver.setPixelRGB(x, z + 1, red, green, blue); // Con +1 sposta in basso l'animazione
       }
     }
     ledDriver.show();
@@ -3817,8 +3833,8 @@ void postWiFiSetup (void) {
     myIP = WiFi.localIP();
 
     // mDNS is needed to see HostName in Arduino IDE
-    Serial.println("Starting mDNS responder.");
-    MDNS.begin(HostName);
+    //Serial.println("Starting mDNS responder.");
+    //MDNS.begin(HostName);
     //MDNS.addService("http", "tcp", 80);
   }
   renderer.clearScreenBuffer(matrix);

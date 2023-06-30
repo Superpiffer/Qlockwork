@@ -6,6 +6,7 @@ Renderer.h
 #define RENDERER_H
 
 #include <Arduino.h>
+#include "Configuration.h"
 #include "Modes.h"
 #include "Languages.h"
 #include "Letters.h"
@@ -15,8 +16,8 @@ Renderer.h
 enum eTextPos : uint8_t
 {
   TEXT_POS_TOP,
-  TEXT_POS_MIDDLE = 2,
-  TEXT_POS_BOTTOM = 5
+  TEXT_POS_MIDDLE = 3,
+  TEXT_POS_BOTTOM = 6
 };
 
 class Renderer

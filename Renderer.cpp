@@ -1619,6 +1619,19 @@ void Renderer::setSmallText(String menuText, eTextPos textPos, uint16_t matrix[]
         matrix[textPos + i] |= numbers[menuText[0] - '0'][i] << 8;
     }
   }
+  else if (menuText.length() == 3)
+  {
+    for (uint8_t i = 0; i <= 4; i++)
+    {
+      for (uint8_t j = 0; j < menuText.length(); j++)
+      {
+        if (!isNumber(menuText[j]))
+          matrix[textPos + i] |= miniLetters[menuText[j] - 'A'][i] << (13 - j * 4);
+        else
+          matrix[textPos + i] |= miniNumbers[menuText[j] - '0'][i] << (13 - j * 4);
+      }
+    }
+  }
 }
 
 // Test for number.
@@ -1645,13 +1658,13 @@ void Renderer::unsetPixelInScreenBuffer(uint8_t x, uint8_t y, uint16_t matrix[])
 // Clear screenbuffer.
 void Renderer::clearScreenBuffer(uint16_t matrix[])
 {
-  for (uint8_t i = 0; i <= 9; i++)
+  for (uint8_t i = 0; i < NUMPIXELS_Y; i++)
     matrix[i] = 0b0000000000000000;
 }
 
 // Turn all LEDs in screenbuffer on.
 void Renderer::setAllScreenBuffer(uint16_t matrix[])
 {
-  for (uint8_t i = 0; i <= 9; i++)
+  for (uint8_t i = 0; i < NUMPIXELS_Y; i++)
     matrix[i] = 0b1111111111111111;
 }
