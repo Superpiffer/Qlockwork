@@ -678,11 +678,11 @@ void Renderer::setTime(uint8_t hours, uint8_t minutes, uint8_t language, bool ch
       break;
     case 7:
       // 5 nach halb
-      IT_MENO;
-      IT_VENTI;
+      IT_E2;
+      IT_TRENTA;
       IT_CINQUE;
-      setHours(hours + 1, false, language, matrix);
-      IT_hours(hours + 1, matrix);
+      setHours(hours, false, language, matrix);
+      IT_hours(hours, matrix);
       break;
     case 8:
       // 20 vor
